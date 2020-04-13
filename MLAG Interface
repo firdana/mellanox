@@ -1,0 +1,68 @@
+MLAG configuration is very similar to port-channel configuration. It is recommended to keep the same port in each switch within
+the same mlag-port-channel (not a must). In this example, there are two MLAG ports, one for each host (host s1 is connected to mlag-port-channel 1 and host s2 is connected to mlag-port-channel 2).
+
+*Note*:  The "mlag-port-channel" number is globally significant and must be the same on both switches.
+Note:  In the example below "1-2" is a range.  It is possible to configure it individually versus using a range.
+Configure the following on both switches:
+
+```
+sx01 (config) # interface mlag-port-channel 1-2
+sx01 (config interface port-channel 1-2 ) # exit
+```
+
+To set the MLAG interface in  *static*  mode run:
+
+```
+x01 (config) # interface ethernet 1/1 mlag-channel-group 1 mode on
+sx01 (config) # interface ethernet 1/2 mlag-channel-group 2 mode on
+```
+
+========================================================================================================================
+
+To set the MLAG interface in  *LACP*  mode, run:
+
+```
+sx01 (config) # interface ethernet 1/1 mlag-channel-group 1 mode active
+sx01 (config) # interface ethernet 1/2 mlag-channel-group 2 mode active
+```
+
+To change any MLAG port parameter, for example MTU simply enter to the MLAG interface configuration mode and perform the change. Note that for some operations you may need to use "force" or disable the link manually.
+
+Enable the two interfaces:
+
+```
+sx01 (config interface mlag-port-channel 1-2 ) # mtu 9216 force
+```
+
+To verify MLAG configuration and status, run the following commands:
+1. show mlag
+
+2. show mlag-vip
+
+3. show interface mlag-port-channel summary
+
+4. show interface ethernet <number>
+
+5. show interface mlag-port-channel <number>
+
+6. show mlag statistics
+
+7. show lacp counters
+
+8. show ip route
+
+## *Server Configuration*
+
+There are various of options to configure a bond on the servers.
+
+Important Note:
+
+Not all bond modes are applicable. The support bonding modes are:
+
+- balance-rr: mode 0
+
+- balance-xor: mode 2
+
+- 802.3ad (LACP): mode 4 (starting from 3.4.0000 MLNX-OS release)
+
+*Linux Bonding Mode* *Mode Number* *is LAG required on the switch?* *Can it be used for MLAG interface?* balance-rr0YesYesactive-backup1NoNobalance-xor2YesYesbroadcast3NoNo802.3ad4Yes (with LACP)Yesbalance-tlb5NoNobalance-alb6NoNo
