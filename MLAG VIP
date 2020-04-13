@@ -1,0 +1,25 @@
+MLAG VIP (Virtual IP) is important for retrieving peer information.
+
+*Note*: The IP address should be  *within the subnet of the management interface*  (mgmt0).
+
+Configure the following on both switches:
+
+```
+sx01 (config)# mlag-vip my-mlag-vip-domain ip 10.209.28.200 /24 force
+```
+
+Set a virtual system MAC. The System MAC is used to identify the far-end switch used for the LACP System ID. It should be  *unicast*  range.
+
+*Note*: In case of an upgrade the MAC address is auto-calculated. For new MLAG installation, it must be added as configuration.
+
+*Note*: This command is applicable since 3.4.2008 software release and onward. in case you are running older software version, you can ignore it.
+
+```
+switch (config)# mlag system-mac 00:00:5E:00:01:5D
+```
+
+Enable MLAG globally
+
+```
+switch config) # no mlag shutdown
+```
