@@ -1,0 +1,18 @@
+run "show version" to verify.  Make sure that both switches have the  *same software version*
+*General*
+
+* Enable LACP. This is required for the IPL.
+* Disable spanning tree (STP). When using MLAG on the switch, there are no loopbacks. Either disable STP globally on the switch or if you need to use spanning tree on other interfaces in the switch, at least disable it on the MLAG interfaces. In most cases, STP is not needed when MLAG is configured.
+* Enable IP routing.
+* Enable MLAG protocol.
+* Enable QoS globally
+
+Run the following commands on both switches:
+
+```
+sx01 (config) # lacp
+sx01 (config) # no spanning-tree
+sx01 (config) # ip routing
+sx01 (config) # protocol mlag
+sx01 (config) # dcb priority-flow-control enable force
+```
